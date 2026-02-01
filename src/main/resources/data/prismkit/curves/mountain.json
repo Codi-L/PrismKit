@@ -1,0 +1,42 @@
+{
+  "curve_name": "mountain",
+  "segments": [
+    {
+      "anchor_start": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "handle_start_out": {
+        "x": 0.2,
+        "y": 0.2
+      },
+      "handle_end_in": {
+        "x": 0.3,
+        "y": 0.9
+      },
+      "anchor_end": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    {
+      "anchor_start": {
+        "x": 0.5,
+        "y": 1.0
+      },
+      "handle_start_out": {
+        "x": 0.7,
+        "y": 0.9
+      },
+      "handle_end_in": {
+        "x": 0.8,
+        "y": 0.2
+      },
+      "anchor_end": {
+        "x": 1.0,
+        "y": 0.0
+      }
+    }
+  ],
+  "clamp_mode": "CLAMP"
+}
