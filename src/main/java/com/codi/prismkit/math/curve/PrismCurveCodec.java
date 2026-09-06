@@ -8,49 +8,6 @@ import org.joml.Vector2d;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * PrismCurve 的 JSON 序列化/反序列化适配器
- * 将曲线对象转换为紧凑的 JSON 格式，并支持从 JSON 加载
- * 
- * 设计意图：
- * - 使用 GSON 库实现自动化序列化
- * - JSON 格式需要平衡可读性和文件大小
- * - 支持手动编辑 JSON 文件（开发者友好）
- * - 同时支持单段曲线和多段曲线的序列化
- * 
- * 单段曲线 JSON 格式示例：
- * {
- *   "curve_name": "fade_in_smooth",
- *   "control_points": [
- *     {"x": 0.0, "y": 0.0},
- *     {"x": 0.3, "y": 0.1},
- *     {"x": 0.7, "y": 0.9},
- *     {"x": 1.0, "y": 1.0}
- *   ],
- *   "clamp_mode": "CLAMP"
- * }
- * 
- * 多段曲线 JSON 格式示例：
- * {
- *   "curve_name": "mountain",
- *   "segments": [
- *     {
- *       "anchor_start": {"x": 0.0, "y": 0.0},
- *       "handle_start_out": {"x": 0.2, "y": 0.2},
- *       "handle_end_in": {"x": 0.3, "y": 0.9},
- *       "anchor_end": {"x": 0.5, "y": 1.0}
- *     },
- *     {
- *       "anchor_start": {"x": 0.5, "y": 1.0},
- *       "handle_start_out": {"x": 0.7, "y": 0.9},
- *       "handle_end_in": {"x": 0.8, "y": 0.2},
- *       "anchor_end": {"x": 1.0, "y": 0.0}
- *     }
- *   ],
- *   "clamp_mode": "CLAMP"
- * }
- */
 public class PrismCurveCodec implements JsonSerializer<PrismCurve>, JsonDeserializer<PrismCurve> {
 
     /**
@@ -117,7 +74,7 @@ public class PrismCurveCodec implements JsonSerializer<PrismCurve>, JsonDeserial
      */
     private JsonObject serializePivotPoint(CurvePivotPoint point) {
         JsonObject json = new JsonObject();
-        json.addProperty("point_mode", point.getPointMode().name());
+        json.addProperty("point_mode", point.getPivotPointMode().name());
         json.addProperty("x", point.getX());
         json.addProperty("y", point.getY());
         json.add("tangent_in", JsonKit.serializeVector2d(point.getTangentIn()));

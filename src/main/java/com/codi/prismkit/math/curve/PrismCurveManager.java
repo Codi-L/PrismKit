@@ -462,19 +462,4 @@ public class PrismCurveManager {
         LOGGER.info("PrismCurve 缓存已清空");
     }
 
-    /**
-     * 将两个控制点连接成一个曲线段
-     *
-     * @param p1 第一个PivotPoint
-     * @param p2 第二个PivotPoint
-     * @return 连接而成的CurveSegment
-     */
-    public CurveSegment linkPivotPoint(CurvePivotPoint p1, CurvePivotPoint p2) {
-        return new CurveSegment(
-                p1,
-                p1.getTangentOutPoint(),
-                p2.getTangentInPoint(),
-                p2
-        );
-    }
 }

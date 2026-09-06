@@ -108,7 +108,7 @@ public class CurvePivotPoint extends CurveControlPoint{
         }
     }
 
-    public CurvePivotPointMode getPointMode() { return pointMode; }
+    public CurvePivotPointMode getPivotPointMode() { return pointMode; }
     public void setPointMode(CurvePivotPointMode pointMode) { this.pointMode = pointMode; }
 
     /**
@@ -132,10 +132,6 @@ public class CurvePivotPoint extends CurveControlPoint{
                 getX() + (float) tangentOut.x,
                 getY() + (float) tangentOut.y
         );
-    }
-
-    public CurvePivotPointMode getPivotPointMode() {
-        return pointMode;
     }
 
     //将该枢纽点与另一个枢纽点连接，返回曲线段
