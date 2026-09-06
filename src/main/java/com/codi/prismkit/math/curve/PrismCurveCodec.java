@@ -133,8 +133,10 @@ public class PrismCurveCodec implements JsonSerializer<PrismCurve>, JsonDeserial
 
             switch (mode) {
                 case "SMOOTH":
-                    if (json.has("tangent_out") || json.has("tangent_in")) {
+                    if (json.has("tangent_out") && json.has("tangent_in")) {
                         PrismKit.LOGGER.warn("SMOOTH模式的枢纽点仅需设置一侧切线，默认读取tangent_out,tangent_in将被忽略");
+                        Vector2d tangentOut = JsonKit.deserializeVector2d(json.getAsJsonObject("tangent_out"));
+                        return CurvePivotPoint.createSmoothPivotPoint(x, y, tangentOut);
                     } else if (json.has("tangent_out")) {
                         Vector2d tangentOut = JsonKit.deserializeVector2d(json.getAsJsonObject("tangent_out"));
                         return CurvePivotPoint.createSmoothPivotPoint(x, y, tangentOut);
@@ -147,7 +149,7 @@ public class PrismCurveCodec implements JsonSerializer<PrismCurve>, JsonDeserial
                 case "LINEAR":
                     return CurvePivotPoint.createLinearPivotPoint(x, y);
                 case "SPLIT":
-                    if (json.has("tangent_out") || json.has("tangent_in")) {
+                    if (json.has("tangent_out") && json.has("tangent_in")) {
                         return CurvePivotPoint.createSplitPivotPoint(x, y,
                                 JsonKit.deserializeVector2d(json.getAsJsonObject("tangent_in")),
                                 JsonKit.deserializeVector2d(json.getAsJsonObject("tangent_out")));
