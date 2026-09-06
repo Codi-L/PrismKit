@@ -9,9 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 
 import static java.lang.Math.pow;
@@ -45,7 +44,7 @@ public class LaserRenderer extends EntityRenderer<LaserEntity> {
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
         
         Matrix4f matrix4f = poseStack.last().pose();
-        Matrix3f matrix3f = poseStack.last().normal();
+        PoseStack.Pose pose = poseStack.last();
         
         float width = 0.5f;
         float red = 1.0f;
@@ -55,42 +54,41 @@ public class LaserRenderer extends EntityRenderer<LaserEntity> {
         float bottom = 0.0f;
         float top = (float) height;
         
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, top, -width, red, green, blue, alpha, 15728880, 0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, top, width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, top, -width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, top, width, red, green, blue, alpha, 15728880, 0f);
         
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, top, width, red, green, blue, alpha, 15728880, 0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, top, -width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, top, width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, top, -width, red, green, blue, alpha, 15728880, 0f);
         
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, top, width, red, green, blue, alpha, 15728880, 0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, top, width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, bottom, width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, top, width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, top, width, red, green, blue, alpha, 15728880, 0f);
         
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, -width, top, -width, red, green, blue, alpha, 15728880, 0f);
-        addVertexWithGradient(vertexConsumer, matrix4f, matrix3f, width, top, -width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, bottom, -width, red, green, blue, alpha, 15728880, 1.0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, -width, top, -width, red, green, blue, alpha, 15728880, 0f);
+        addVertexWithGradient(vertexConsumer, matrix4f, pose, width, top, -width, red, green, blue, alpha, 15728880, 0f);
         
         poseStack.popPose();
     }
 
-    private void addVertexWithGradient(VertexConsumer consumer, Matrix4f matrix4f, Matrix3f matrix3f,
+    private void addVertexWithGradient(VertexConsumer consumer, Matrix4f matrix4f, PoseStack.Pose pose,
                           float x, float y, float z, 
                           float red, float green, float blue, float baseAlpha,
                           int packedLight, float gradientFactor) {
         float finalAlpha = (float) (baseAlpha * pow(gradientFactor,10));
         
-        consumer.vertex(matrix4f, x, y, z)
-                .color(red, green, blue, finalAlpha)
-                .uv(0, 0)
-                .overlayCoords(0)
-                .uv2(packedLight)
-                .normal(matrix3f, 0, 1, 0)
-                .endVertex();
+        consumer.addVertex(matrix4f, x, y, z)
+                .setColor(red, green, blue, finalAlpha)
+                .setUv(0, 0)
+                .setOverlay(0)
+                .setLight(packedLight)
+                .setNormal(pose, 0, 1, 0);
     }
 
     @Override

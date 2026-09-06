@@ -5,18 +5,18 @@ import com.codi.prismkit.math.curve.PrismCurveManager;
 import com.codi.prismkit.registry.PKEntityRegister;
 import com.codi.prismkit.registry.PKParticleRegister;
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import org.slf4j.Logger;
 
 @Mod(PrismKit.MOD_ID)
@@ -24,16 +24,13 @@ public class PrismKit {
     public static final String MOD_ID = "prismkit";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public PrismKit(FMLJavaModLoadingContext context) {
-        IEventBus modEventBus = context.getModEventBus();
-
+    public PrismKit(IEventBus modEventBus) {
         PKEntityRegister.register(modEventBus);
         PKParticleRegister.register(modEventBus);
 
         // 注册公共设置事件
         modEventBus.addListener(this::commonSetup);
 
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     /**
@@ -50,9 +47,6 @@ public class PrismKit {
             LOGGER.info("PrismKit 初始化完成，已加载 {} 个曲线",
                     PrismCurveManager.getInstance().getCurveCount());
 
-            // 设置默认调试曲线（可以在这里修改要显示的曲线）
-            // 如果不需要显示，注释掉下面这行
-            PrismCurveDebugRenderer.setDebugCurve("mountain2");
         });
     }
 
@@ -106,8 +100,13 @@ public class PrismKit {
         return PrismCurveDebugRenderer.getDebugCurveName();
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
+        @SubscribeEvent
+        public static void clientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(() -> PrismCurveDebugRenderer.setDebugCurve("mountain2"));
+        }
+
         @SubscribeEvent
         public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
             event.registerSpriteSet(PKParticleRegister.TEST_PARTICLE.get(),
@@ -125,7 +124,7 @@ public class PrismKit {
      * 客户端 Forge 事件监听器（游戏运行时事件）
      * 用于监听渲染事件并绘制调试曲线
      */
-    @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
         /**
          * GUI 渲染事件：在所有 GUI 元素绘制完成后绘制调试曲线
@@ -144,7 +143,7 @@ public class PrismKit {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @EventBusSubscriber(modid = MOD_ID)
     public static class ServerEvents {
         @SubscribeEvent
         public static void onDatapackSync(OnDatapackSyncEvent event) {

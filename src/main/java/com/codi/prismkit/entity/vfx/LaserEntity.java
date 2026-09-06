@@ -25,10 +25,10 @@ public class LaserEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(DATA_DURATION, 40);
-        this.entityData.define(DATA_MAX_DURATION, 40);
-        this.entityData.define(DATA_LASER_HEIGHT, 50.0f);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_DURATION, 40);
+        builder.define(DATA_MAX_DURATION, 40);
+        builder.define(DATA_LASER_HEIGHT, 50.0f);
     }
 
     public void setDuration(int ticks) {
