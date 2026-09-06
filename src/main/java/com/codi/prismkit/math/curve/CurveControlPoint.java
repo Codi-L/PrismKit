@@ -1,5 +1,9 @@
 package com.codi.prismkit.math.curve;
 
+/**
+ * 三次贝塞尔曲线中的二维控制点。
+ * 坐标允许超出 [0, 1]，以支持回弹和过冲效果。
+ */
 public class CurveControlPoint {
     private float x;
     private float y;
@@ -12,13 +16,18 @@ public class CurveControlPoint {
     public float getX() {
         return x;
     }
+
     public float getY() {
         return y;
     }
 
-    public void setX(float x) { this.x = x; }
-    public void setY(float y) { this.y = y; }
+    public void setX(float x) {
+        this.x = x;
+    }
 
+    public void setY(float y) {
+        this.y = y;
+    }
 
     /**
      * 验证控制点是否在标准范围内（x 和 y 都在 [0, 1] 之间）
@@ -27,7 +36,6 @@ public class CurveControlPoint {
      * @return 如果 x 和 y 都在 [0, 1] 范围内返回 true
      */
     public boolean isNormalized() {
-
         return x >= 0.0f && x <= 1.0f && y >= 0.0f && y <= 1.0f;
     }
 
@@ -39,8 +47,7 @@ public class CurveControlPoint {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CurveControlPoint)) return false;
-        CurveControlPoint other = (CurveControlPoint) obj;
+        if (!(obj instanceof CurveControlPoint other)) return false;
         return Float.compare(x, other.x) == 0 && Float.compare(y, other.y) == 0;
     }
 

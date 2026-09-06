@@ -1,7 +1,7 @@
 package com.codi.prismkit.math.curve;
 
 /**
- * 曲线超出 [0, 1] 范围时的处理模式
+ * 曲线输入超出 [0, 1] 范围时的处理模式。
  * 
  * 设计意图：
  * - 提供多种边界处理策略，适应不同的使用场景
@@ -42,15 +42,11 @@ public enum CurveClampMode {
             
             case REPEAT:
                 // 取小数部分，实现循环
-                if (t >= 0.0f) {
-                    return t - (float) Math.floor(t);
-                } else {
-                    return 1.0f - (Math.abs(t) - (float) Math.floor(Math.abs(t)));
-                }
+                return applyRepeat(t);
             
             case MIRROR:
                 // 镜像循环
-                float repeated = apply_repeat(t);
+                float repeated = applyRepeat(t);
                 int cycle = (int) Math.floor(t);
                 // 偶数周期正向，奇数周期反向
                 return (cycle % 2 == 0) ? repeated : (1.0f - repeated);
@@ -63,11 +59,7 @@ public enum CurveClampMode {
     /**
      * 内部辅助方法：实现 REPEAT 逻辑
      */
-    private float apply_repeat(float t) {
-        if (t >= 0.0f) {
-            return t - (float) Math.floor(t);
-        } else {
-            return 1.0f - (Math.abs(t) - (float) Math.floor(Math.abs(t)));
-        }
+    private float applyRepeat(float t) {
+        return t - (float) Math.floor(t);
     }
 }

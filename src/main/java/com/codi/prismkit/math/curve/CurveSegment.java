@@ -1,13 +1,14 @@
 package com.codi.prismkit.math.curve;
 
 /**
- * 曲线段（Curve Segment）
- * 表示连接两个枢纽点的单段三次贝塞尔曲线
+ * 曲线段（Curve Segment）。
+ * 表示连接两个相邻枢纽点的单段三次贝塞尔曲线。
  * 
  * 设计意图：
- * - 每个段是独立的三次贝塞尔曲线，使用4个控制点定义
+ * - 每个段由两个枢纽点和两个切线控制点定义
  * - anchorStart 和 anchorEnd 是曲线必须经过的枢纽点
- * - handleStartOut 和 handleEndIn 是控制手柄端点，决定曲线形状
+ * - handleStartOut 和 handleEndIn 的 Y 坐标决定段内数值变化
+ * - 枢纽点的 X 坐标决定曲线段范围，并线性映射为局部参数 t
  * 
  * 数学模型：
  * 对于段内的局部参数 t ∈ [0, 1]：
@@ -51,7 +52,7 @@ public class CurveSegment {
         this.handleEndIn = handleEndIn;
         this.anchorEnd = anchorEnd;
         
-        // 自动计算段的x范围
+        // 曲线段范围由两个枢纽点的 X 坐标确定
         this.xStart = anchorStart.getX();
         this.xEnd = anchorEnd.getX();
         
@@ -74,7 +75,7 @@ public class CurveSegment {
     }
     
     /**
-     * 计算该段在给定全局x值处的y值
+     * 计算该段在给定全局 X 值处的 Y 值。
      * 
      * @param globalX 全局归一化x坐标
      * @return 对应的y值
@@ -90,7 +91,7 @@ public class CurveSegment {
         // 将全局x转换为段内局部参数 t ∈ [0, 1]
         float t = (globalX - xStart) / (xEnd - xStart);
         
-        // 使用三次贝塞尔公式计算y值
+        // 使用四个控制点的 Y 坐标计算曲线值
         return evaluateBezierY(t);
     }
     
@@ -151,7 +152,7 @@ public class CurveSegment {
     }
     
     /**
-     * 获取段的长度（x轴跨度）
+     * 获取曲线段的 X 轴跨度。
      */
     public float getLength() {
         return xEnd - xStart;

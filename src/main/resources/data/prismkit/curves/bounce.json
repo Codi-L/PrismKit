@@ -1,21 +1,23 @@
 {
   "curve_name": "bounce",
-  "control_points": [
+  "pivot_points": [
     {
+      "point_mode": "SMOOTH",
       "x": 0.0,
-      "y": 0.0
+      "y": 0.0,
+      "tangent_out": {
+        "x": 0.5,
+        "y": 1.2
+      }
     },
     {
-      "x": 0.5,
-      "y": 1.2
-    },
-    {
-      "x": 0.8,
-      "y": 0.9
-    },
-    {
+      "point_mode": "SMOOTH",
       "x": 1.0,
-      "y": 1.0
+      "y": 1.0,
+      "tangent_out": {
+        "x": 0.2,
+        "y": 0.1
+      }
     }
   ],
   "clamp_mode": "CLAMP"

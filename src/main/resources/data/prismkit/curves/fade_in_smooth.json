@@ -1,21 +1,23 @@
 {
   "curve_name": "fade_in_smooth",
-  "control_points": [
+  "pivot_points": [
     {
+      "point_mode": "SMOOTH",
       "x": 0.0,
-      "y": 0.0
+      "y": 0.0,
+      "tangent_out": {
+        "x": 0.3,
+        "y": 0.1
+      }
     },
     {
-      "x": 0.3,
-      "y": 0.1
-    },
-    {
-      "x": 0.7,
-      "y": 0.9
-    },
-    {
+      "point_mode": "SMOOTH",
       "x": 1.0,
-      "y": 1.0
+      "y": 1.0,
+      "tangent_out": {
+        "x": 0.3,
+        "y": 0.1
+      }
     }
   ],
   "clamp_mode": "CLAMP"

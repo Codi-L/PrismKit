@@ -39,12 +39,9 @@ public class PrismKit {
      */
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // 运行单元测试（开发阶段验证功能）
-            //PrismCurveTest.runAllTests();
-
             // 初始化曲线管理器
             PrismCurveManager.getInstance().initialize(FMLPaths.CONFIGDIR.get());
-            LOGGER.info("PrismKit 初始化完成，已加载 {} 个曲线",
+            LOGGER.info("PrismKit 初始化完成，已加载 {} 条用户曲线",
                     PrismCurveManager.getInstance().getCurveCount());
 
         });
@@ -60,7 +57,7 @@ public class PrismKit {
      * @return 对应的输出值（纵轴）
      * <p>
      * 使用示例：
-     * float opacity = PrismKit.getCurveValue("fade_in", progress);
+     * float opacity = PrismKit.getCurveValue("fade_in_smooth", progress);
      */
     public static float getCurveValue(String curveName, float x) {
         return PrismCurveManager.getInstance().getCurveValue(curveName, x);
@@ -104,7 +101,8 @@ public class PrismKit {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent event) {
-            event.enqueueWork(() -> PrismCurveDebugRenderer.setDebugCurve("mountain2"));
+            // 默认展示内置多段曲线，便于开发环境确认加载与渲染结果
+            event.enqueueWork(() -> PrismCurveDebugRenderer.setDebugCurve("mountain"));
         }
 
         @SubscribeEvent
@@ -121,11 +119,11 @@ public class PrismKit {
     }
 
     /**
-     * 客户端 Forge 事件监听器（游戏运行时事件）
+     * 客户端 NeoForge 事件监听器（游戏运行时事件）
      * 用于监听渲染事件并绘制调试曲线
      */
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
-    public static class ClientForgeEvents {
+    public static class ClientGameEvents {
         /**
          * GUI 渲染事件：在所有 GUI 元素绘制完成后绘制调试曲线
          * 这样曲线会覆盖在游戏界面最上层
@@ -147,8 +145,8 @@ public class PrismKit {
     public static class ServerEvents {
         @SubscribeEvent
         public static void onDatapackSync(OnDatapackSyncEvent event) {
-            // 资源包同步完成后重新加载曲线
-            PrismCurveManager.getInstance().loadCurvesFromDataDirectory();
+            // 按数据包、用户配置的优先级重建曲线缓存
+            PrismCurveManager.getInstance().reloadAll();
         }
     }
 }

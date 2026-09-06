@@ -17,9 +17,8 @@ import org.slf4j.Logger;
  * - 使用红色线条绘制曲线，背景透明不遮挡游戏画面
  * - 坐标系统：屏幕左下角 (0,0)，右上角 (1,1)
  * 
- * 使用方法：
- * 在 Config.java 中设置 debugCurveName = "fade_in_smooth"
- * 进入游戏后曲线会自动显示在屏幕上
+ * 使用方法：调用 PrismKit.setDebugCurve("fade_in_smooth") 设置曲线，
+ * 传入 null 或空字符串即可关闭显示。
  */
 @OnlyIn(Dist.CLIENT)
 public class PrismCurveDebugRenderer {
@@ -31,12 +30,6 @@ public class PrismCurveDebugRenderer {
     
     // 曲线采样点数量（越多越平滑，但性能开销越大）
     private static final int SAMPLE_POINTS = 200;
-    
-    // 曲线颜色（RGBA，红色）
-    private static final float RED = 1.0f;
-    private static final float GREEN = 0.0f;
-    private static final float BLUE = 0.0f;
-    private static final float ALPHA = 1.0f;
     
     // 线条粗细（像素）
     private static final float LINE_WIDTH = 2.0f;

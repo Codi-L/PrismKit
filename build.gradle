@@ -56,10 +56,25 @@ neoForge {
             sourceSet sourceSets.main
         }
     }
+
+    unitTest {
+        enable()
+        testedMod = mods."${mod_id}"
+    }
 }
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    testImplementation(enforcedPlatform('org.junit:junit-bom:5.14.4'))
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
 }
 
 def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
