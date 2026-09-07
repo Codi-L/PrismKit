@@ -8,6 +8,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.slf4j.Logger;
 
+import static org.joml.Math.lerp;
+
 /**
  * PrismCurve 调试渲染器
  * 在游戏界面上可视化显示指定的贝塞尔曲线
@@ -87,11 +89,12 @@ public class PrismCurveDebugRenderer {
         int prevY = -1;
         
         for (int i = 0; i < SAMPLE_POINTS; i++) {
-            // 计算归一化的 x 坐标（0 到 1）
+            // 计算归一化的 x与y 坐标（0 到 1）
             float normalizedX = i / (float) (SAMPLE_POINTS - 1);
-            
-            // 通过 PrismKit API 获取对应的 y 值
             float normalizedY = PrismKit.getCurveValue(debugCurveName, normalizedX);
+            // 控制显示范围
+            normalizedX = (float) lerp(0.2,0.8,normalizedX);
+            normalizedY = (float) lerp(0.2,0.8,normalizedY);
             
             // 转换为屏幕坐标（GUI 缩放后的逻辑坐标）
             int screenX = (int) (normalizedX * screenWidth);
@@ -167,12 +170,20 @@ public class PrismCurveDebugRenderer {
         
         // 白色半透明（ARGB: 0x4DFFFFFF 约 30% 透明度）
         int whiteAlpha = 0x4DFFFFFF;
-        
+
+        int axes_x_x0 = (int) (screenWidth * 0.8);
+        int axes_x_x1 = (int) (screenWidth * 0.2);
+        int axes_x_y0 = (int) (screenHeight * 0.8);
+
+        int axes_y_x0 = (int) (screenWidth * 0.2);
+        int axes_y_y0 = (int) (screenHeight * 0.8);
+        int axes_y_y1 = (int) (screenHeight * 0.2);
+
         // 绘制 X 轴（底部，水平线）
-        drawLine(guiGraphics, 0, screenHeight - 1, screenWidth - 1, screenHeight - 1, whiteAlpha);
+        drawLine(guiGraphics, axes_x_x0, axes_x_y0, axes_x_x1, axes_x_y0, whiteAlpha);
         
         // 绘制 Y 轴（左侧，垂直线）
-        drawLine(guiGraphics, 0, 0, 0, screenHeight - 1, whiteAlpha);
+        drawLine(guiGraphics, axes_y_x0, axes_y_y0, axes_y_x0, axes_y_y1, whiteAlpha);
     }
 
     /**
