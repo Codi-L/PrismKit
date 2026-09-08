@@ -181,7 +181,6 @@ public class PrismCurveDebugRenderer {
 
         // 绘制 X 轴（底部，水平线）
         drawLine(guiGraphics, axes_x_x0, axes_x_y0, axes_x_x1, axes_x_y0, whiteAlpha);
-        
         // 绘制 Y 轴（左侧，垂直线）
         drawLine(guiGraphics, axes_y_x0, axes_y_y0, axes_y_x0, axes_y_y1, whiteAlpha);
     }
