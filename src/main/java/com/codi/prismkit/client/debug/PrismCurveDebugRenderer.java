@@ -75,14 +75,14 @@ public class PrismCurveDebugRenderer {
             return;
         }
         
-        LOGGER.debug("[PrismCurve Debug] 开始渲染曲线: {}", debugCurveName);
+        // LOGGER.debug("[PrismCurve Debug] 开始渲染曲线: {}", debugCurveName);
         
         // 使用 GUI 缩放后的尺寸（与 GuiGraphics 一致）
         Minecraft mc = Minecraft.getInstance();
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
         
-        LOGGER.debug("[PrismCurve Debug] GUI 屏幕尺寸: {}x{}", screenWidth, screenHeight);
+        // LOGGER.debug("[PrismCurve Debug] GUI 屏幕尺寸: {}x{}", screenWidth, screenHeight);
         
         // 采样曲线并用直线连接点
         int prevX = -1;
@@ -115,7 +115,7 @@ public class PrismCurveDebugRenderer {
             prevY = screenY;
         }
         
-        LOGGER.debug("[PrismCurve Debug] 渲染完成");
+        // LOGGER.debug("[PrismCurve Debug] 渲染完成");
     }
     
     /**

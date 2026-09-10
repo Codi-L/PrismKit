@@ -1,6 +1,8 @@
 package com.codi.prismkit;
 
 import com.codi.prismkit.client.debug.PrismCurveDebugRenderer;
+import com.codi.prismkit.client.input.PKKeyMappings;
+import com.codi.prismkit.client.input.PKKeyMappings;
 import com.codi.prismkit.math.curve.PrismCurveManager;
 import com.codi.prismkit.registry.PKEntityRegister;
 import com.codi.prismkit.registry.PKParticleRegister;
@@ -14,6 +16,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -115,6 +118,11 @@ public class PrismKit {
         public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(PKEntityRegister.LASER.get(),
                     com.codi.prismkit.client.renderer.LaserRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+            PKKeyMappings.register(event);
         }
     }
 
